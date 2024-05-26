@@ -2,6 +2,7 @@
 using Fiorello_PB101.Models;
 using Fiorello_PB101.Services.Interfaces;
 using Fiorello_PB101.ViewModels.Categories;
+using Fiorello_PB101.ViewModels.Products;
 using Microsoft.EntityFrameworkCore;
 
 namespace Fiorello_PB101.Services
@@ -60,6 +61,16 @@ namespace Fiorello_PB101.Services
             return await _context.Categories.ToListAsync();
         }
 
+        public async Task<IEnumerable<Category>> GetAllPaginateAsync(int page, int take)
+        {
+            return await _context.Categories.Include(m => m.Products)
+                                             .OrderByDescending(m => m.Id)
+                                            
+                                            .Skip((page - 1) * take)
+                                            .Take(take)
+                                            .ToListAsync();
+        }
+
         public async Task<IEnumerable<CategoryProductVM>> GetAllWithProductAsync()
         {
             IEnumerable<Category> categories= await _context.Categories.Include(m=>m.Products).
@@ -92,7 +103,7 @@ namespace Fiorello_PB101.Services
                 CategoryName = category.Name,
                 CreatedDate = category.CreatedDate.ToString("MM.dd.yyyy"),
                 ProductCount = category.Products.Count,
-                Products = category.Products.Select(m => new ProductVM
+                Products = category.Products.Select(m => new Fiorello_PB101.ViewModels.Categories.ProductVM
                 {
                     Id = m.Id,
                     Name = m.Name
@@ -105,6 +116,24 @@ namespace Fiorello_PB101.Services
 
 
 
+        }
+
+        public async Task<int> GetCountAsync()
+        {
+            return await _context.Categories.CountAsync();
+        }
+
+        public IEnumerable<CategoryProductVM> GetMappedDatas(IEnumerable<Category> categories)
+        {
+            return categories.Select(m => new CategoryProductVM
+            {
+                Id = m.Id,
+                CategoryName = m.Name,
+                ProductCount = m.Products.Count,
+                CreatedDate = m.CreatedDate.ToString("MM.dd.yyyy")
+
+
+            }); 
         }
 
         public async Task RestoreFromArchiveAsync(int id)

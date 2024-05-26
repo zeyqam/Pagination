@@ -15,6 +15,10 @@ namespace Fiorello_PB101.Services.Interfaces
         Task<bool> ExistExceptByIdAsync(int id,string name);
         Task<IEnumerable<CategoryArchiveVM>> GetAllArchiveAsync();
         Task RestoreFromArchiveAsync(int id);
+        IEnumerable<CategoryProductVM> GetMappedDatas(IEnumerable<Category> categories);
+        Task<IEnumerable<Category>> GetAllPaginateAsync(int page, int take);
+        Task<int> GetCountAsync();
+
 
     }
 }
