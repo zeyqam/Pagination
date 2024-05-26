@@ -10410,6 +10410,11 @@ select.form-control:focus::-ms-value, .dataTables_wrapper select:focus::-ms-valu
   border-radius: 0.3rem;
 }
 
+.paginate-active{
+    background-color:#007bff!important;
+        color:white!important;
+}
+
 select.form-control[size], .dataTables_wrapper select[size], select.form-control[multiple], .dataTables_wrapper select[multiple] {
   height: auto;
 }

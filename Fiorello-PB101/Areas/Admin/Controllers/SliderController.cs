@@ -1,5 +1,5 @@
 ﻿using Fiorello_PB101.Data;
-using Fiorello_PB101.Extensions;
+using Fiorello_PB101.Helpers.Extensions;
 using Fiorello_PB101.ViewModels.Sliders;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;

@@ -1,6 +1,7 @@
 ﻿using Fiorello_PB101.Data;
 using Fiorello_PB101.Models;
 using Fiorello_PB101.Services.Interfaces;
+using Fiorello_PB101.ViewModels.Products;
 using Microsoft.EntityFrameworkCore;
 
 namespace Fiorello_PB101.Services
@@ -20,11 +21,41 @@ namespace Fiorello_PB101.Services
                                              .ToListAsync();
         }
 
+        public async Task<IEnumerable<Product>> GetAllPaginateAsync(int page,int take)
+        {
+            return await _context.Products.Include(m => m.Category)
+                                            .Include(m => m.ProductImages)
+                                            .Skip((page-1)*take)
+                                            .Take(take)
+                                            .ToListAsync();
+        }
+
+      
+
         public async  Task<Product> GetByIdAsync(int id)
         {
             return await _context.Products.FindAsync(id);
         }
 
+        public async Task<int> GetCountAsync()
+        {
+            return await _context.Products.CountAsync();
+        }
+
+        public IEnumerable<ProductVM> GetMappeDatas(IEnumerable<Product> products)
+        {
+            return products.Select(m => new ProductVM
+            {
+                Id=m.Id,
+                Name=m.Name,
+                Price=m.Price,
+                Description=m.Description,
+                CategoryName=m.Category.Name,
+                MainImage=m.ProductImages?.FirstOrDefault(m=>m.IsMain)?.Name
+
+
+            });
+        }
         public async Task<Product> GetProductByIdAsync(int? id)
         {
             return await _context.Products.Where(m=>m.Id == id)
@@ -37,5 +68,7 @@ namespace Fiorello_PB101.Services
         {
             return await _context.Products.Include(m=>m.ProductImages).ToListAsync();
         }
+
+       
     }
 }

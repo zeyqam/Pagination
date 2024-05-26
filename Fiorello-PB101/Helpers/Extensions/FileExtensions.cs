@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace Fiorello_PB101.Extensions
+namespace Fiorello_PB101.Helpers.Extensions
 {
     public static class FileExtensions
     {
@@ -14,7 +14,7 @@ namespace Fiorello_PB101.Extensions
             return file.Length / 1024 < size;
         }
 
-        public static async Task SaveFileLocalAsync(this IFormFile file,string path)
+        public static async Task SaveFileLocalAsync(this IFormFile file, string path)
         {
             using (FileStream stream = new FileStream(path, FileMode.Create))
             {
@@ -31,9 +31,9 @@ namespace Fiorello_PB101.Extensions
 
         }
 
-        public static string GenerateFilePath(this IWebHostEnvironment _env,string folder,string fileName)
+        public static string GenerateFilePath(this IWebHostEnvironment _env, string folder, string fileName)
         {
-               return Path.Combine(_env.WebRootPath,folder,fileName);
+            return Path.Combine(_env.WebRootPath, folder, fileName);
         }
     }
 }
