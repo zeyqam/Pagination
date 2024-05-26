@@ -1,0 +1,51 @@
+﻿@model IEnumerable<BlogVM>
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+
+@{
+    ViewData["Title"] = "Blogs";
+}
+
+<div class="container mt-5">
+    <h2 class="text-center">Blogs</h2>
+    <div class="create-operation">
+        <a asp-action="Create" class="btn btn-success text-white btn-sm"><i class="mdi mdi-plus"></i> Create New Blog</a>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Image</th>
+                    <th>Created Date</th>
+                    <th>Operations</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Title</td>
+                        <td>@item.Description</td>
+                        <td><img src="~/img/@item.Image" alt="Image" style="width: 100px; height: 100px;" /></td>
+                        <td>@item.CreatedDate</td>
+                        <td>
+                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary text-white btn-sm"><i class="mdi mdi-information-variant"></i></a>
+
+                            <form class="d-inline" method="post" asp-action="Delete" asp-route-id="@item.Id">
+                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning text-white btn-sm"><i class="mdi mdi-grease-pencil"></i></a>
+                                <button type="submit" class="btn btn-danger text-white btn-sm"><i class="mdi mdi-delete"></i></button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+

@@ -1,0 +1,60 @@
+﻿@model IEnumerable<CategoryArchiveVM>
+
+@{
+    ViewData["Title"] = "Category Archive";
+}
+
+<div class="container mt-5">
+    <h2 class="text-center">rchive Categories</h2>
+    
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>
+                        Category
+                    </th>
+                    <th>
+                        Created date
+                    </th>
+                    <
+
+                    <th>
+                        Operations
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr class="category-data">
+                        <td class="py-1">
+                            @item.CategoryName
+                        </td>
+                        <td>
+                            @item.CreatedDate
+                        </td>
+                        
+                        <td>
+                            
+                            <form class="d-inline" method="post" asp-area="Admin" asp-controller="Category" asp-action="Delete" asp-route-id="@item.Id">
+                                <button type="submit" class="btn btn-danger text-white btn-sm"><i class="mdi mdi mdi-delete"></i></button>
+                            </form>
+                            <form class="d-inline" method="post" asp-area="Admin" asp-controller="Archive" asp-action="RestoreFromArchive" asp-route-id="@item.Id">
+                                <button type="submit" class="btn btn-secondary text-white btn-sm">Restore</button>
+                            </form>
+                        </td>
+
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section js{
+    <script src="~/js/restoreArchive.js"></script>
+}
+
+
