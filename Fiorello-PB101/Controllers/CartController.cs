@@ -84,5 +84,69 @@ namespace Fiorello_PB101.Controllers
             int basketCount = basketDatas.Count;
             return Ok(new {basketCount,totalCount,totalPrice});
         }
+
+
+        [HttpPost]
+        public IActionResult IncrementProductCount(int? id)
+        {
+            if (id is null)
+            {
+                return BadRequest();
+            }
+
+            List<BasketVM> basketDatas = new();
+            if (_accessor.HttpContext.Request.Cookies["basket"] is not null)
+            {
+                basketDatas = JsonConvert.DeserializeObject<List<BasketVM>>(_accessor.HttpContext.Request.Cookies["basket"]);
+            }
+
+            var product = basketDatas.FirstOrDefault(m => m.Id == id);
+            if (product != null)
+            {
+                product.Count++;
+            }
+
+            _accessor.HttpContext.Response.Cookies.Append("basket", JsonConvert.SerializeObject(basketDatas));
+
+            int totalCount = basketDatas.Sum(m => m.Count);
+            decimal totalPrice = basketDatas.Sum(m => m.Count * m.Price);
+            int basketCount = basketDatas.Count;
+
+            return Ok(new { basketCount, totalCount, totalPrice, productCount = product?.Count });
+        }
+
+
+        [HttpPost]
+        public IActionResult DecrementProductCount(int? id)
+        {
+            if (id is null)
+            {
+                return BadRequest();
+            }
+
+            List<BasketVM> basketDatas = new();
+            if (_accessor.HttpContext.Request.Cookies["basket"] is not null)
+            {
+                basketDatas = JsonConvert.DeserializeObject<List<BasketVM>>(_accessor.HttpContext.Request.Cookies["basket"]);
+            }
+
+            var product = basketDatas.FirstOrDefault(m => m.Id == id);
+            if (product != null && product.Count > 1)
+            {
+                product.Count--;
+            }
+            else if (product != null && product.Count == 1)
+            {
+                basketDatas.Remove(product);
+            }
+
+            _accessor.HttpContext.Response.Cookies.Append("basket", JsonConvert.SerializeObject(basketDatas));
+
+            int totalCount = basketDatas.Sum(m => m.Count);
+            decimal totalPrice = basketDatas.Sum(m => m.Count * m.Price);
+            int basketCount = basketDatas.Count;
+
+            return Ok(new { basketCount, totalCount, totalPrice, productCount = product?.Count });
+        }
     }
 }

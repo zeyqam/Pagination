@@ -35,8 +35,36 @@
         })
 
     })
+    function updateCart(data) {
+        $(".total-basket-count").text(`You have ${data.basketCount} items in your cart`);
+        $(".cart-grand-total").text(`$${data.totalPrice}`);
+        $(`[data-product-id="${data.productId}"] .count`).text(data.productCount);
+    }
+    $(document).on("click", ".increment", function () {
+        var id = $(this).data("id");
+        $.ajax({
+            url: `cart/IncrementProductCount?id=${id}`,
+            type: 'POST',
+            data: { id: id },
+            success: function (data) {
+                updateCart({ ...data, productId: id });
+            }
+        });
+    });
+    $(document).on("click", ".decrement", function () {
+        var id = $(this).data("id");
+        $.ajax({
+            url: `cart/DecrementProductCount?id=${id}`,
+            type: 'POST',
+            data: { id: id },
+            success: function (data) {
+                updateCart({ ...data, productId: id });
+            }
+        });
+    });
+});
     
 
-})
+
 
 
