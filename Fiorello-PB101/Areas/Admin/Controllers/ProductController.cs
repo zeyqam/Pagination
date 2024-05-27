@@ -33,7 +33,7 @@ namespace Fiorello_PB101.Areas.Admin.Controllers
         {
             int productCount = await _productService.GetCountAsync();
             
-            return (int)Math.Ceiling((decimal)productCount / take); ;
+            return (int)Math.Ceiling((decimal)productCount / take); 
         }
     }
 }

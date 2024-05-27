@@ -19,6 +19,7 @@ builder.Services.AddScoped<ICategoryService,CategoryService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IFooterService,FooterService>();
 builder.Services.AddScoped<ISettingService,SettingService>();
+builder.Services.AddScoped<IArchiveService,ArchiveService>();
 
 var app = builder.Build();
 
